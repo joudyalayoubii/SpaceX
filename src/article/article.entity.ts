@@ -1,5 +1,11 @@
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 
+export enum ArticleState {
+  APPROVED = 'approved',
+  REJECTED = 'rejected',
+  PENDING = 'pending',
+}
+
 @Entity()
 export class Article {
   @PrimaryGeneratedColumn()
@@ -11,15 +17,23 @@ export class Article {
   @Column()
   content: string;
 
-  @Column({ default:'pending' })
-  state:['approved' , 'rejected' , 'pending']; 
+  @Column({
+    type: 'enum',
+    enum: ArticleState,
+    default: ArticleState.PENDING,
+  })
+  state: ArticleState;
 
-  @Column()
+   @Column()
   userId: number; 
 
   @Column({ nullable: true })
-  imageUrl: string; 
+  adminId: number;
+
 
   @Column({ nullable: true })
-  videoUrl: string; 
+  imageUrl: string;
+
+  @Column({ nullable: true })
+  videoUrl: string;
 }
